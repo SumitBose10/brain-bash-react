@@ -10,9 +10,13 @@ import { toast } from "sonner";
 
 const QuizPage = () => {
   const navigate = useNavigate();
+  const [shuffledQuestions, setShuffledQuestions] = useState(() => {
+    const shuffled = [...quizData].sort(() => Math.random() - 0.5);
+    return shuffled;
+  });
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(
-    new Array(quizData.length).fill(null)
+    new Array(shuffledQuestions.length).fill(null)
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,7 +27,7 @@ const QuizPage = () => {
   };
 
   const handleNext = () => {
-    if (currentQuestion < quizData.length - 1) {
+    if (currentQuestion < shuffledQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
@@ -45,12 +49,13 @@ const QuizPage = () => {
     setIsSubmitting(true);
     
     const score = answers.reduce((acc, answer, index) => {
-      return acc + (answer === quizData[index].correctAnswer ? 1 : 0);
+      return acc + (answer === shuffledQuestions[index].correctAnswer ? 1 : 0);
     }, 0);
 
     localStorage.setItem("quizScore", score.toString());
     localStorage.setItem("quizAnswers", JSON.stringify(answers));
-    localStorage.setItem("quizTotal", quizData.length.toString());
+    localStorage.setItem("quizQuestions", JSON.stringify(shuffledQuestions));
+    localStorage.setItem("quizTotal", shuffledQuestions.length.toString());
     
     setTimeout(() => {
       navigate("/result");
@@ -62,12 +67,13 @@ const QuizPage = () => {
     
     const score = answers.reduce((acc, answer, index) => {
       if (answer === null) return acc;
-      return acc + (answer === quizData[index].correctAnswer ? 1 : 0);
+      return acc + (answer === shuffledQuestions[index].correctAnswer ? 1 : 0);
     }, 0);
 
     localStorage.setItem("quizScore", score.toString());
     localStorage.setItem("quizAnswers", JSON.stringify(answers));
-    localStorage.setItem("quizTotal", quizData.length.toString());
+    localStorage.setItem("quizQuestions", JSON.stringify(shuffledQuestions));
+    localStorage.setItem("quizTotal", shuffledQuestions.length.toString());
     
     setTimeout(() => {
       navigate("/result");
@@ -75,14 +81,14 @@ const QuizPage = () => {
   };
 
   const answeredCount = answers.filter((a) => a !== null).length;
-  const isLastQuestion = currentQuestion === quizData.length - 1;
+  const isLastQuestion = currentQuestion === shuffledQuestions.length - 1;
 
   return (
     <div className="min-h-screen bg-gradient-hero py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex-1 w-full">
-            <ProgressBar current={currentQuestion + 1} total={quizData.length} />
+            <ProgressBar current={currentQuestion + 1} total={shuffledQuestions.length} />
           </div>
           <Timer
             initialTime={QUIZ_TIME_LIMIT}
@@ -92,7 +98,7 @@ const QuizPage = () => {
         </div>
 
         <QuestionCard
-          question={quizData[currentQuestion]}
+          question={shuffledQuestions[currentQuestion]}
           selectedOption={answers[currentQuestion]}
           onSelectOption={handleSelectOption}
         />
@@ -110,7 +116,7 @@ const QuizPage = () => {
           </Button>
 
           <div className="text-sm text-muted-foreground">
-            {answeredCount} of {quizData.length} answered
+            {answeredCount} of {shuffledQuestions.length} answered
           </div>
 
           {isLastQuestion ? (

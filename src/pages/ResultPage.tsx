@@ -3,20 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Trophy, RotateCcw, CheckCircle, XCircle, Home } from "lucide-react";
-import { quizData } from "@/data/quizData";
+import { Question } from "@/data/quizData";
 
 const ResultPage = () => {
   const navigate = useNavigate();
   const [score, setScore] = useState(0);
   const [total, setTotal] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
     const savedScore = localStorage.getItem("quizScore");
     const savedTotal = localStorage.getItem("quizTotal");
     const savedAnswers = localStorage.getItem("quizAnswers");
+    const savedQuestions = localStorage.getItem("quizQuestions");
 
-    if (!savedScore || !savedTotal) {
+    if (!savedScore || !savedTotal || !savedQuestions) {
       navigate("/");
       return;
     }
@@ -25,6 +27,9 @@ const ResultPage = () => {
     setTotal(parseInt(savedTotal));
     if (savedAnswers) {
       setAnswers(JSON.parse(savedAnswers));
+    }
+    if (savedQuestions) {
+      setQuestions(JSON.parse(savedQuestions));
     }
   }, [navigate]);
 
@@ -43,6 +48,7 @@ const ResultPage = () => {
     localStorage.removeItem("quizScore");
     localStorage.removeItem("quizTotal");
     localStorage.removeItem("quizAnswers");
+    localStorage.removeItem("quizQuestions");
     navigate("/quiz");
   };
 
@@ -50,6 +56,7 @@ const ResultPage = () => {
     localStorage.removeItem("quizScore");
     localStorage.removeItem("quizTotal");
     localStorage.removeItem("quizAnswers");
+    localStorage.removeItem("quizQuestions");
     navigate("/");
   };
 
@@ -90,7 +97,7 @@ const ResultPage = () => {
             <h2 className="text-xl font-semibold mb-4">Review Your Answers</h2>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {answers.map((answer, index) => {
-                const isCorrect = answer === quizData[index].correctAnswer;
+                const isCorrect = answer === questions[index]?.correctAnswer;
                 return (
                   <div
                     key={index}
