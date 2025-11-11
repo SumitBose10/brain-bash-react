@@ -1,73 +1,211 @@
-# Welcome to your Lovable project
+# Online Quiz Application
 
-## Project info
+A modern, interactive quiz application built with React, TypeScript, and Tailwind CSS. Test your knowledge across multiple categories with a clean, user-friendly interface.
 
-**URL**: https://lovable.dev/projects/ce0a051b-7c2a-4ab8-9607-1e377990c471
+![Quiz Application](https://img.shields.io/badge/React-18.3.1-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.x-blue)
 
-## How can I edit this code?
+## 🌟 Features
 
-There are several ways of editing your application.
+- **30 Diverse Questions** - Multiple categories including Science, Geography, Technology, History, Mathematics, Art, and Literature
+- **Customizable Timer** - Choose your preferred time per question (15s, 30s, 45s, or 60s)
+- **Shuffled Questions** - Questions are randomly shuffled for each quiz attempt to ensure fairness
+- **Real-time Timer** - Visual countdown timer with color-coded warnings
+- **Progress Tracking** - Real-time progress bar showing completion percentage
+- **Instant Results** - View your score immediately after completion
+- **Best Score Tracking** - Local storage saves your best performance
+- **Responsive Design** - Works seamlessly on desktop, tablet, and mobile devices
+- **Clean UI** - Modern, minimal interface with smooth animations
 
-**Use Lovable**
+## 🚀 Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ce0a051b-7c2a-4ab8-9607-1e377990c471) and start prompting.
+### Prerequisites
 
-Changes made via Lovable will be committed automatically to this repo.
+- Node.js (v14 or higher)
+- npm or yarn package manager
 
-**Use your preferred IDE**
+### Installation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+1. Clone the repository:
+```bash
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
 ```
 
-**Edit a file directly in GitHub**
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Start the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-**Use GitHub Codespaces**
+4. Open your browser and navigate to:
+```
+http://localhost:5173
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎮 How to Use
 
-## What technologies are used for this project?
+1. **Start Page** - Select your preferred time duration per question (15s, 30s, 45s, or 60s)
+2. **Take the Quiz** - Answer all 30 questions within the time limit
+3. **View Results** - See your score and compare it with your best score
+4. **Retry** - Take the quiz again to beat your high score!
 
-This project is built with:
+## 📁 Project Structure
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+src/
+├── components/
+│   ├── quiz/
+│   │   ├── QuestionCard.tsx    # Question display component
+│   │   ├── Timer.tsx            # Countdown timer component
+│   │   └── ProgressBar.tsx      # Progress tracking component
+│   └── ui/                      # Reusable UI components (shadcn/ui)
+├── data/
+│   └── quizData.ts              # Quiz questions and shuffle logic
+├── pages/
+│   ├── Start.tsx                # Landing/start page
+│   ├── Quiz.tsx                 # Main quiz interface
+│   ├── Result.tsx               # Results page
+│   └── NotFound.tsx             # 404 page
+├── hooks/                       # Custom React hooks
+├── lib/
+│   └── utils.ts                 # Utility functions
+├── App.tsx                      # Main app component with routing
+├── index.css                    # Global styles and design tokens
+└── main.tsx                     # Application entry point
+```
 
-## How can I deploy this project?
+## 🛠️ Technologies Used
 
-Simply open [Lovable](https://lovable.dev/projects/ce0a051b-7c2a-4ab8-9607-1e377990c471) and click on Share -> Publish.
+- **React 18.3.1** - Frontend library
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Build tool and dev server
+- **React Router DOM** - Client-side routing
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - High-quality UI components
+- **Lucide React** - Beautiful icon library
+- **TanStack Query** - Data fetching and state management
 
-## Can I connect a custom domain to my Lovable project?
+## 🎨 Design Features
 
-Yes, you can!
+- Custom color scheme with blue/cyan gradient accents
+- Semantic design tokens for consistent theming
+- Smooth animations and transitions
+- Accessible and keyboard-friendly interface
+- Dark mode compatible color system
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📊 Quiz Data Structure
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Questions are stored in `src/data/quizData.ts` with the following structure:
+
+```typescript
+{
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: number;  // Index of correct option
+  category: string;
+}
+```
+
+## 🔧 Customization
+
+### Adding More Questions
+
+Edit `src/data/quizData.ts` and add new question objects to the `quizQuestions` array:
+
+```typescript
+{
+  id: 31,
+  question: "Your question here?",
+  options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+  correctAnswer: 0,
+  category: "YourCategory"
+}
+```
+
+### Changing Timer Options
+
+Modify the `timerOptions` array in `src/pages/Start.tsx`:
+
+```typescript
+const timerOptions = [
+  { value: 15, label: "15 sec", description: "Fast pace" },
+  { value: 30, label: "30 sec", description: "Standard" },
+  // Add more options here
+];
+```
+
+### Styling
+
+- Global styles: `src/index.css`
+- Theme configuration: `tailwind.config.ts`
+- Component styles: Tailwind classes in component files
+
+## 📱 Responsive Breakpoints
+
+- Mobile: < 768px
+- Tablet: 768px - 1024px
+- Desktop: > 1024px
+
+## 🚀 Building for Production
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+The build output will be in the `dist/` directory, ready for deployment.
+
+## 📦 Deployment
+
+### Deploy with Lovable
+
+Simply open your [Lovable Project](https://lovable.dev/projects/09781415-da42-4510-8c37-ef44063545f3) and click on Share → Publish.
+
+### Custom Domain
+
+You can connect a custom domain by navigating to Project → Settings → Domains and clicking Connect Domain.
+
+Read more: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## 📝 Code Editing Options
+
+### Use Lovable
+Visit the [Lovable Project](https://lovable.dev/projects/09781415-da42-4510-8c37-ef44063545f3) and start prompting. Changes are automatically committed.
+
+### Use Your IDE
+Clone this repo and push changes. They will be reflected in Lovable automatically.
+
+### Use GitHub Codespaces
+Launch a Codespace from your repository for a cloud-based development environment.
+
+## 📝 License
+
+This project is open source and available under the MIT License.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+
+## 👨‍💻 Author
+
+Created with ❤️ using [Lovable](https://lovable.dev)
+
+## 🔗 Project URL
+
+**Lovable Project**: https://lovable.dev/projects/09781415-da42-4510-8c37-ef44063545f3
+
+---
+
+**Note**: This application stores quiz results in browser's local storage. Clearing browser data will reset your best score.
